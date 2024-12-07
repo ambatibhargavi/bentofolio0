@@ -1,57 +1,57 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react"
 
 const lerp = (start, end, t) => {
-  return start + (end - start) * t;
-};
+  return start + (end - start) * t
+}
 
 const FollowingCursor = () => {
-  const cursorRef = useRef(null);
-  const innerRef = useRef(null);
-  const requestRef = useRef();
-  const cursorPositionRef = useRef({ x: 0, y: 0 });
-  const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0 });
+  const cursorRef = useRef(null)
+  const innerRef = useRef(null)
+  const requestRef = useRef()
+  const cursorPositionRef = useRef({ x: 0, y: 0 })
+  const [currentPosition, setCurrentPosition] = useState({ x: 0, y: 0 })
 
   const handleMouseMove = (e) => {
-    cursorPositionRef.current = { x: e.clientX, y: e.clientY };
+    cursorPositionRef.current = { x: e.clientX, y: e.clientY }
     if (e.target.tagName === "H2" || e.target.id === "home") {
-      cursorRef.current.style.height = "50px";
-      cursorRef.current.style.width = "50px";
-      innerRef.current.style.height = "30px";
-      innerRef.current.style.width = "30px";
-      innerRef.current.style.opacity = "100%";
+      cursorRef.current.style.height = "50px"
+      cursorRef.current.style.width = "50px"
+      innerRef.current.style.height = "30px"
+      innerRef.current.style.width = "30px"
+      innerRef.current.style.opacity = "100%"
     } else {
-      cursorRef.current.style.height = "40px";
-      cursorRef.current.style.width = "40px";
-      innerRef.current.style.height = "0px";
-      innerRef.current.style.width = "0px";
-      innerRef.current.style.opacity = "0%";
+      cursorRef.current.style.height = "40px"
+      cursorRef.current.style.width = "40px"
+      innerRef.current.style.height = "0px"
+      innerRef.current.style.width = "0px"
+      innerRef.current.style.opacity = "0%"
     }
-  };
+  }
 
   useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove)
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+      window.removeEventListener("mousemove", handleMouseMove)
+    }
+  }, [])
 
-  const animate = useCallback(() => {
+  const animate = () => {
     setCurrentPosition((prev) => ({
       x: lerp(prev.x, cursorPositionRef.current.x, 0.1),
       y: lerp(prev.y, cursorPositionRef.current.y, 0.1),
-    }));
+    }))
 
-    requestRef.current = requestAnimationFrame(animate);
-  }, []);
+    requestRef.current = requestAnimationFrame(animate)
+  }
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [animate]);
+    requestRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(requestRef.current)
+  }, [])
 
   return (
-    <div className="hidden lg:block">
+    <div className='hidden lg:block'>
       <div
         ref={cursorRef}
         style={{
@@ -87,7 +87,7 @@ const FollowingCursor = () => {
         ></div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FollowingCursor;
+export default FollowingCursor
